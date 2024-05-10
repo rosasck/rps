@@ -22,7 +22,7 @@ fn main() {
 
         // Game Loop
         'rps_game: loop {
-            let comp_move: RPSMove = rand::thread_rng().gen();
+            let computer_move: RPSMove = rand::thread_rng().gen();
 
             println!("Please select (R)ock, (P)aper, or (S)cissors: \n(Q) to end the game");
 
@@ -39,7 +39,7 @@ fn main() {
                 let player_move = match player_move {
                     Ok(player_move_val) => {
                         println!("\nYour play: {}", player_move_val);
-                        println!("Computer played: {}", comp_move);
+                        println!("Computer played: {}", computer_move);
                         player_move_val
                     }
                     Err(RPSMoveError::Unknown(s)) => {
@@ -58,7 +58,7 @@ fn main() {
 
                 // Play outcome
 		println!("\nResults:");
-                let result: RPSResult = player_move.compare(&comp_move);
+                let result: RPSResult = player_move.compare(&computer_move);
                 match result {
 		    RPSResult::Tie(_) => println!("Tie...Nobody wins"),
                     RPSResult::Win(_) => {
