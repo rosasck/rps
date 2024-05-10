@@ -1,19 +1,19 @@
-/** 
+/**
  * @file main.rs
  * @brief Rock, Paper, Scissors Game
  * @author Katie Stoltz
- * 
+ *
  */
 
 use std::io;
 use rand::Rng;
 
 mod core;
-use core::types::{RPSMove, RPSResult, RPSMoveError};
+use core::types::{ RPSMove, RPSResult, RPSMoveError };
 use core::helperfunctions::Compare;
 
 fn main() {
-    println!("Lets play Rock, Paper, Scissors! Best of 5 wins");
+    println!("\nLets play Rock, Paper, Scissors! Best of 5 wins\n");
 
     loop {
         let mut player_wins = 0;
@@ -24,15 +24,13 @@ fn main() {
         'rps_game: loop {
             let computer_move: RPSMove = rand::thread_rng().gen();
 
-            println!("Please select (R)ock, (P)aper, or (S)cissors: \n(Q) to end the game");
+            println!("\nPlease select (R)ock, (P)aper, or (S)cissors: \n(Q) to end the game");
 
             // Each Play Loop
             loop {
                 let mut player_move = String::new();
 
-                io::stdin()
-                    .read_line(&mut player_move)
-                    .expect("Couldn't read move");
+                io::stdin().read_line(&mut player_move).expect("Couldn't read move");
 
                 let player_move: Result<RPSMove, RPSMoveError> = player_move.trim().parse();
 
@@ -57,10 +55,10 @@ fn main() {
                 };
 
                 // Play outcome
-		println!("\nResults:");
+                println!("\nResults:");
                 let result: RPSResult = player_move.compare(&computer_move);
                 match result {
-		    RPSResult::Tie(_) => println!("Tie...Nobody wins"),
+                    RPSResult::Tie(_) => println!("Tie...Nobody wins"),
                     RPSResult::Win(_) => {
                         player_wins += 1;
                         println!("{}: You won this round.", result);
@@ -84,34 +82,43 @@ fn main() {
             } else {
                 println!(
                     "\nCurrent Score: \nPlayer Wins: {} \nComputer Wins: {} \n",
-                    player_wins, computer_wins
+                    player_wins,
+                    computer_wins
                 );
-		println!("-------------------------------------------------------");
+                println!("-------------------------------------------------------");
             }
         }
-	// Player Quit Game
-	if end_game == true {
-        	println!("Ending Game!\n");
-		break;
-    	}
 
-        // Replay 
-	println!("-------------------------------------------------------");
-        println!("Do you want to play again? \n(Q) to end the game");
-        let mut input = String::new();
-        io::stdin()
-            .read_line(&mut input)
-            .expect("Couldn't read input");
+        if !end_game {
+            // Replay
+            println!("-------------------------------------------------------");
+            println!("Do you want to play again? \n (Y/N)");
+            loop {
+                let mut input = String::new();
+                io::stdin().read_line(&mut input).expect("Couldn't read input");
 
-        match input.trim().to_lowercase().as_str() {
-            "q" | "quit" => {
-                println!("Ending Game!\n");
-                break;
+                match input.trim().to_lowercase().as_str() {
+                    "n" | "no" => {
+                        end_game = true;
+                        break;
+                    }
+                    "y" | "yes" => {
+                        println!("Restarting game.... Loading...\n");
+                        println!("-------------------------------------------------------");
+                        break;
+                    }
+                    _ => {
+                        println!("Invalid input, please enter (y)es or (n)o");
+                        continue;
+                    }
+                }
             }
-            _ => continue,
         }
 
-	
+        // Player Quit Game
+        if end_game == true {
+            println!("Ending Game!\n");
+            break;
+        }
     }
-    
 }

@@ -1,17 +1,17 @@
-/** 
+/**
  * @file helperfunctions.rs
  * @brief Helper Functions for RPS Game
  * @author Katie Stoltz
- * 
+ *
  */
 
-// Imports 
-use crate::core::types::{RPSMove, RPSResult, RPSJudge, RPSMoveError}; 
+// Imports
+
+use crate::core::types::{ RPSMove, RPSResult, RPSJudge, RPSMoveError };
 use std::fmt;
 use std::str;
 use rand::Rng;
-use rand::distributions::{Distribution, Standard};
-
+use rand::distributions::{ Distribution, Standard };
 
 pub trait Compare<T, U> {
     fn compare(&self, b: &T) -> U;
@@ -20,31 +20,20 @@ pub trait Compare<T, U> {
 impl Compare<RPSMove, RPSResult> for RPSMove {
     fn compare(&self, b: &RPSMove) -> RPSResult {
         match (self, b) {
-            (RPSMove::Rock, RPSMove::Rock) =>
-                RPSResult::Tie(self.to_string()),
-            (RPSMove::Rock, RPSMove::Paper) =>
-                RPSResult::Loss(RPSJudge::PaperBeatsRock),
-            (RPSMove::Rock, RPSMove::Scissors) =>
-                RPSResult::Win(RPSJudge::RockBeatsScissors),
-            
-            (RPSMove::Paper, RPSMove::Rock) =>
-                RPSResult::Win(RPSJudge::PaperBeatsRock),
-            (RPSMove::Paper, RPSMove::Paper) =>
-                RPSResult::Tie(self.to_string()),
-            (RPSMove::Paper, RPSMove::Scissors) =>
-                RPSResult::Loss(RPSJudge::ScissorsBeatsPaper),
-            
-            (RPSMove::Scissors, RPSMove::Rock) =>
-                RPSResult::Loss(RPSJudge::RockBeatsScissors),
-            (RPSMove::Scissors, RPSMove::Paper) =>
-                RPSResult::Win(RPSJudge::ScissorsBeatsPaper),
-            (RPSMove::Scissors, RPSMove::Scissors) =>
-                RPSResult::Tie(self.to_string()),
+            (RPSMove::Rock, RPSMove::Rock) => RPSResult::Tie(self.to_string()),
+            (RPSMove::Rock, RPSMove::Paper) => RPSResult::Loss(RPSJudge::PaperBeatsRock),
+            (RPSMove::Rock, RPSMove::Scissors) => RPSResult::Win(RPSJudge::RockBeatsScissors),
+
+            (RPSMove::Paper, RPSMove::Rock) => RPSResult::Win(RPSJudge::PaperBeatsRock),
+            (RPSMove::Paper, RPSMove::Paper) => RPSResult::Tie(self.to_string()),
+            (RPSMove::Paper, RPSMove::Scissors) => RPSResult::Loss(RPSJudge::ScissorsBeatsPaper),
+
+            (RPSMove::Scissors, RPSMove::Rock) => RPSResult::Loss(RPSJudge::RockBeatsScissors),
+            (RPSMove::Scissors, RPSMove::Paper) => RPSResult::Win(RPSJudge::ScissorsBeatsPaper),
+            (RPSMove::Scissors, RPSMove::Scissors) => RPSResult::Tie(self.to_string()),
         }
     }
 }
-
-
 
 impl fmt::Display for RPSResult {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
@@ -55,13 +44,12 @@ impl fmt::Display for RPSResult {
                     RPSJudge::PaperBeatsRock => write!(f, "Paper beats rock"),
                     RPSJudge::ScissorsBeatsPaper => write!(f, "Scissors beats paper"),
                 }
-            },
+            }
             RPSResult::Tie(result) => write!(f, "{}", result),
         }
     }
 }
 
- 
 impl str::FromStr for RPSMove {
     type Err = RPSMoveError;
 
@@ -75,12 +63,11 @@ impl str::FromStr for RPSMove {
     }
 }
 
-
 impl fmt::Display for RPSMove {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         match self {
-            RPSMove::Rock    => write!(f, "Rock"),
-            RPSMove::Paper   => write!(f, "Paper"),
+            RPSMove::Rock => write!(f, "Rock"),
+            RPSMove::Paper => write!(f, "Paper"),
             RPSMove::Scissors => write!(f, "Scissors"),
         }
     }

@@ -1,12 +1,12 @@
-/** 
+/**
  * @file types.rs
  * @brief Type Declarations
  * @author Katie Stoltz
- * 
+ *
  */
 
-
 // RPSMove: Available Moves
+
 pub enum RPSMove {
     Rock,
     Paper,
